@@ -14,11 +14,8 @@ export async function getCabins() {
 }
 
 export async function createEditCabin(newCabin, id) {
-    console.log(newCabin, id)
     const hasImagePath = String(newCabin.image).includes(supabaseUrl);
-    console.log(hasImagePath);
     const imageName = `${Math.random()}-${newCabin.image.name}`.replaceAll('/', '');
-    console.log(imageName)
     const imagePath = hasImagePath ? newCabin.image : `${supabaseUrl}/storage/v1/object/public/cabin-images/${imageName}`;
 
 
@@ -46,6 +43,8 @@ export async function createEditCabin(newCabin, id) {
         throw new Error('could not be loaded any cabin');
 
     }
+
+    if (hasImagePath) return data;
     //upload image    
     const { error: imageError } = await supabase
         .storage
